@@ -521,6 +521,12 @@
         font-size: 0.94rem;
       }
 
+      .score-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 1rem;
+      }
+
       .two-col {
         display: grid;
         grid-template-columns: 1.15fr 0.85fr;
@@ -602,6 +608,7 @@
         .levels-grid, .score-grid { grid-template-columns: 1fr; }
         .selector, .panel { padding-left: 0.9rem; padding-right: 0.9rem; }
         .selector-head { align-items: flex-start; flex-direction: column; }
+        .score-actions { justify-content: stretch; }
       }
 
       @media (max-width: 420px) {
@@ -773,10 +780,14 @@
             <button class="score-btn" data-score="6" type="button"><span class="num">6</span><span>Sin respuesta</span></button>
           </div>
 
+          <div class="score-actions">
+            <button id="evaluateBtn" class="btn btn-primary" type="button">Evaluar paciente</button>
+          </div>
+
           <div class="score-result" id="scoreResult">
             <div class="result-label">Puntuación Ramsay</div>
             <h3 class="result-title">Sin selección aún</h3>
-            <p class="result-text">Elija un nivel para visualizar la descripción clínica y la valoración del paciente.</p>
+            <p class="result-text">Elija un nivel para visualizar la descripción clínica y luego presione “Evaluar paciente”.</p>
             <div class="result-note">La interpretación debe integrarse con el objetivo de sedación prescrito, la respuesta del paciente, la monitorización clínica y el criterio profesional del equipo de salud.</div>
           </div>
         </div>
@@ -873,23 +884,40 @@
         }
       };
 
+      let selectedScore = null;
       const scoreButtons = document.querySelectorAll('.score-btn');
       const levelButtons = document.querySelectorAll('[data-level-btn]');
       const levelCards = document.querySelectorAll('.level-card');
       const scoreResult = document.getElementById('scoreResult');
       const resetBtn = document.getElementById('resetBtn');
+      const evaluateBtn = document.getElementById('evaluateBtn');
 
-      function renderScore(score) {
-        const data = levelData[score];
-        if (!data) return;
-
+      function renderSelection(score) {
+        selectedScore = Number(score);
         scoreButtons.forEach(btn => {
-          btn.classList.toggle('active', Number(btn.dataset.score) === Number(score));
+          btn.classList.toggle('active', Number(btn.dataset.score) === selectedScore);
         });
 
         levelCards.forEach(card => {
-          card.classList.toggle('active', Number(card.dataset.level) === Number(score));
+          card.classList.toggle('active', Number(card.dataset.level) === selectedScore);
         });
+      }
+
+      function renderScore(score, showOnlySummary = false) {
+        const data = levelData[score];
+        if (!data) return;
+
+        renderSelection(score);
+
+        if (showOnlySummary) {
+          scoreResult.innerHTML = `
+            <div class="result-label">Resultado final</div>
+            <h3 class="result-title">${data.title}</h3>
+            <p class="result-text">${data.text}</p>
+            <div class="result-note">${data.note}</div>
+          `;
+          return;
+        }
 
         scoreResult.innerHTML = `
           <div class="result-label">Puntuación Ramsay</div>
@@ -911,13 +939,28 @@
         });
       });
 
+      evaluateBtn.addEventListener('click', () => {
+        if (!selectedScore) {
+          scoreResult.innerHTML = `
+            <div class="result-label">Puntuación Ramsay</div>
+            <h3 class="result-title">No hay paciente evaluado</h3>
+            <p class="result-text">Debe seleccionar una puntuación antes de presionar “Evaluar paciente”.</p>
+            <div class="result-note">Seleccione el nivel observado para conocer el estado del paciente en la escala Ramsay.</div>
+          `;
+          return;
+        }
+
+        renderScore(selectedScore, true);
+      });
+
       resetBtn.addEventListener('click', () => {
+        selectedScore = null;
         scoreButtons.forEach(btn => btn.classList.remove('active'));
         levelCards.forEach(card => card.classList.remove('active'));
         scoreResult.innerHTML = `
           <div class="result-label">Puntuación Ramsay</div>
           <h3 class="result-title">Sin selección aún</h3>
-          <p class="result-text">Elija un nivel para visualizar la descripción clínica y la valoración del paciente.</p>
+          <p class="result-text">Elija un nivel para visualizar la descripción clínica y luego presione “Evaluar paciente”.</p>
           <div class="result-note">La interpretación debe integrarse con el objetivo de sedación prescrito, la respuesta del paciente, la monitorización clínica y el criterio profesional del equipo de salud.</div>
         `;
       });
