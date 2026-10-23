@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Escala de Sedación de Ramsay</title>
+  <style>
+    :root {
+      --bg: #edf7fb;
+      --panel: #ffffff;
+      --panel-alt: #f3f9fb;
+      --primary: #0f5d8c;
+      --primary-dark: #0a4067;
+      --secondary: #31b5c5;
+      --accent: #8bd7d2;
+      --text: #1d2b36;
+      --muted: #5e6d78;
+      --border: #dfeef1;
+      --warning: #f2b66d;
+      --success: #5fc2a0;
+      --shadow: 0 18px 42px rgba(15, 93, 140, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(49, 181, 197, 0.14), transparent 30%),
+        linear-gradient(180deg, #f4fbff 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 18px 80px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0d4b78 0%, #0f6a9c 45%, #31b5c5 100%);
+      border-radius: 28px;
+      color: #fff;
+      padding: 32px 28px 26px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .hero::before {
+      width: 260px;
+      height: 260px;
+      right: -60px;
+      top: -80px;
+    }
+
+    .hero::after {
+      width: 180px;
+      height: 180px;
+      left: -30px;
+      bottom: -60px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.24);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 18px 0 10px;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      opacity: 0.96;
+      max-width: 620px;
+    }
+
+    .intro {
+      margin: 18px 0 0;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.9);
+      max-width: 700px;
+    }
+
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 240px;
+    }
+
+    .monitor {
+      width: min(100%, 320px);
+      padding: 20px 18px 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 24px;
+      backdrop-filter: blur(12px);
+      box-shadow: inset 0 0 30px rgba(255,255,255,0.1);
+    }
+
+    .monitor-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      margin-bottom: 18px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.75);
+      display: inline-block;
+    }
+
+    .monitor-body {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      text-align: center;
+    }
+
+    .wave {
+      display: flex;
+      align-items: end;
+      justify-content: center;
+      gap: 5px;
+      height: 82px;
+      padding-top: 10px;
+    }
+
+    .wave span {
+      width: 8px;
+      border-radius: 10px 10px 0 0;
+      background: linear-gradient(180deg, #dff9ff 0%, #7ce8ef 100%);
+      animation: pulse 1.8s ease-in-out infinite alternate;
+    }
+
+    .wave span:nth-child(2) { height: 34%; animation-delay: 0.2s; }
+    .wave span:nth-child(3) { height: 64%; animation-delay: 0.4s; }
+    .wave span:nth-child(4) { height: 50%; animation-delay: 0.6s; }
+    .wave span:nth-child(5) { height: 82%; animation-delay: 0.8s; }
+    .wave span:nth-child(6) { height: 56%; animation-delay: 1s; }
+
+    @keyframes pulse {
+      0% { opacity: 0.5; transform: scaleY(0.9); }
+      100% { opacity: 1; transform: scaleY(1.05); }
+    }
+
+    .monitor-stat {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-top: 8px;
+    }
+
+    .monitor-label {
+      font-size: 0.73rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.8;
+    }
+
+    .highlights {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(120px, 1fr));
+      gap: 16px;
+      margin-top: 26px;
+    }
+
+    .highlight {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 16px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+
+    .highlight-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .highlight-label {
+      font-size: 0.79rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+
+    section {
+      margin-top: 32px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 24px 22px;
+      box-shadow: 0 8px 28px rgba(12, 61, 92, 0.04);
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      letter-spacing: -0.04em;
+      color: var(--primary-dark);
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      margin-top: -8px;
+      margin-bottom: 18px;
+      line-height: 1.7;
+    }
+
+    .levels-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .level-card {
+      position: relative;
+      background: linear-gradient(180deg, #ffffff 0%, var(--panel-alt) 100%);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 16px 16px 18px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: left;
+      width: 100%;
+    }
+
+    .level-card:hover,
+    .level-card:focus-visible {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 30px rgba(15, 93, 140, 0.12);
+      border-color: rgba(49, 181, 197, 0.5);
+      outline: none;
+    }
+
+    .level-card.active {
+      border-color: var(--primary);
+      box-shadow: 0 18px 34px rgba(15, 93, 140, 0.14);
+      background: linear-gradient(180deg, #ffffff 0%, #edfaff 100%);
+    }
+
+    .level-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 800;
+      box-shadow: 0 10px 22px rgba(15, 93, 140, 0.24);
+    }
+
+    .level-card h3 {
+      margin: 14px 0 10px;
+      font-size: 1.1rem;
+      line-height: 1.35;
+      color: var(--primary-dark);
+    }
+
+    .level-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.97rem;
+    }
+
+    .level-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .icon-bubble {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 1.3rem;
+      background: rgba(49, 181, 197, 0.1);
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .selector-panel {
+      display: grid;
+      grid-template-columns: 1.05fr 1.35fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .scale-box,
+    .selected-box {
+      background: linear-gradient(180deg, #ffffff 0%, #f4fbff 100%);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 20px;
+    }
+
+    .scale-wrap {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .score-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 14px;
+      min-height: 74px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .score-btn .num {
+      font-size: 1.45rem;
+      line-height: 1;
+    }
+
+    .score-btn.active {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(15, 93, 140, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .selected-box header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .score-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(15, 93, 140, 0.08);
+      color: var(--primary-dark);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      min-width: 110px;
+    }
+
+    .selected-box h3 {
+      margin: 0 0 10px;
+      color: var(--primary-dark);
+      font-size: clamp(1.4rem, 2vw, 2rem);
+      line-height: 1.2;
+    }
+
+    .selected-box p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .interpretation {
+      background: rgba(49, 181, 197, 0.08);
+      border-left: 4px solid var(--secondary);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: var(--primary-dark);
+      line-height: 1.7;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button.action-btn {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    button.action-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: #fff;
+      box-shadow: 0 12px 22px rgba(15, 93, 140, 0.18);
+    }
+
+    .secondary-btn {
+      background: #eaf7fa;
+      color: var(--primary-dark);
+      border: 1px solid var(--border);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      margin-top: 26px;
+    }
+
+    .info-card {
+      background: linear-gradient(180deg, #fff 0%, #f3fbfd 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px 18px 14px;
+    }
+
+    .info-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+    }
+
+    .info-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .quiz-area {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 12px;
+    }
+
+    .quiz-item {
+      background: linear-gradient(180deg, #fff 0%, #f7fbfd 100%);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .quiz-item h3 {
+      margin: 0 0 12px;
+      font-size: 1.02rem;
+      color: var(--primary-dark);
+    }
+
+    .quiz-options {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .quiz-option {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+      color: var(--text);
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .quiz-option:hover,
+    .quiz-option:focus-visible {
+      border-color: rgba(49, 181, 197, 0.5);
+      outline: none;
+    }
+
+    .quiz-option.correct {
+      background: rgba(95, 194, 160, 0.14);
+      border-color: rgba(95, 194, 160, 0.6);
+      color: #1a5d4d;
+    }
+
+    .quiz-option.incorrect {
+      background: rgba(242, 182, 109, 0.12);
+      border-color: rgba(242, 182, 109, 0.7);
+      color: #7d5f2a;
+    }
+
+    .quiz-answer {
+      display: none;
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: var(--primary-dark);
+      line-height: 1.6;
+      background: rgba(15, 93, 140, 0.05);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    .quiz-answer.visible {
+      display: block;
+    }
+
+    .glossary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .term {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px 16px;
+    }
+
+    .term h3 {
+      margin: 0 0 8px;
+      font-size: 1.02rem;
+      color: var(--primary-dark);
+    }
+
+    .term p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .refs {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 16px;
+    }
+
+    .refs li {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .note {
+      margin-top: 28px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(15, 93, 140, 0.06), rgba(49, 181, 197, 0.08));
+      border: 1px solid rgba(15, 93, 140, 0.12);
+      padding: 18px 20px;
+      color: var(--primary-dark);
+      line-height: 1.75;
+    }
+
+    .note strong {
+      color: var(--primary-dark);
+    }
+
+    @media (max-width: 900px) {
+      .hero-content,
+      .selector-panel,
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .levels-grid,
+      .glossary-grid,
+      .quiz-area {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .container {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .hero {
+        padding: 24px 18px 18px;
+      }
+
+      .levels-grid,
+      .glossary-grid,
+      .quiz-area,
+      .highlights {
+        grid-template-columns: 1fr;
+      }
+
+      .scale-wrap {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .action-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <div class="hero-content">
+        <div>
+          <div class="badge">Enfermería · UCI · Monitorización</div>
+          <h1>Escala de Sedación de Ramsay</h1>
+          <p class="subtitle">Valoración clínica del nivel de sedación del paciente</p>
+          <p class="intro">
+            La Escala de Ramsay es una herramienta clínica subjetiva desarrollada para valorar el nivel
+            de sedación del paciente en contextos de cuidados intensivos, procedimientos o vigilancia
+            postoperatoria. Permite observar la respuesta del paciente ante estímulos verbales y físicos,
+            apoyando la toma de decisiones relacionadas con la analgesia, la sedación y la seguridad del
+            paciente durante la monitorización clínica.
+          </p>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="monitor">
+            <div class="monitor-top">
+              <span>Monitor</span>
+              <div class="dots"><span></span><span></span><span></span></div>
+            </div>
+            <div class="monitor-body">
+              <div>
+                <div class="wave">
+                  <span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <div class="monitor-stat">6</div>
+                <div class="monitor-label">Niveles</div>
+              </div>
+              <div>
+                <div class="wave">
+                  <span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <div class="monitor-stat">R</div>
+                <div class="monitor-label">Ramsay</div>
+              </div>
+              <div>
+                <div class="wave">
+                  <span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <div class="monitor-stat">24h</div>
+                <div class="monitor-label">Vigilancia</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlights">
+        <div class="highlight">
+          <span class="highlight-value">6</span>
+          <span class="highlight-label">Niveles</span>
+        </div>
+        <div class="highlight">
+          <span class="highlight-value">1–6</span>
+          <span class="highlight-label">Puntuación</span>
+        </div>
+        <div class="highlight">
+          <span class="highlight-value">+</span>
+          <span class="highlight-label">Contexto clínico</span>
+        </div>
+      </div>
+    </header>
+
+    <section>
+      <h2>Los seis niveles de la escala</h2>
+      <p class="section-subtitle">
+        Cada nivel representa un estado de sedación que debe valorarse observando la respuesta del paciente
+        a órdenes verbales y estímulos físicos, siempre en el contexto clínico correspondiente.
+      </p>
+
+      <div class="levels-grid" id="levelsGrid"></div>
+    </section>
+
+    <section>
+      <h2>Selector interactivo de puntuación</h2>
+      <p class="section-subtitle">
+        Selecciona el nivel observado en el paciente y revisa la interpretación clínica. La valoración debe
+        integrarse con la indicación médica, el objetivo de sedación y la situación del paciente.
+      </p>
+
+      <div class="selector-panel">
+        <div class="scale-box">
+          <h3 style="margin:0; color:var(--primary-dark);">Escala visual</h3>
+          <div class="scale-wrap" id="scaleWrap"></div>
+        </div>
+
+        <div class="selected-box">
+          <header>
+            <span class="score-badge" id="scoreBadge">Nivel 1</span>
+            <div class="icon-bubble" id="scoreIcon" aria-hidden="true">🩺</div>
+          </header>
+          <h3 id="selectedTitle">Paciente ansioso, agitado o inquieto</h3>
+          <p id="selectedDescription"></p>
+          <div class="interpretation" id="selectedInterpretation"></div>
+          <div class="actions">
+            <button class="action-btn primary-btn" id="resetButton" type="button">Restablecer</button>
+            <button class="action-btn secondary-btn" id="consultButton" type="button">Consultar nivel actual</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Aplicación clínica</h2>
+      <div class="grid-2">
+        <div class="info-card">
+          <h3>Cómo se valora</h3>
+          <ul>
+            <li>Se observa la respuesta del paciente antes de iniciar o durante la sedación.</li>
+            <li>Se evalúan los estímulos verbales y la respuesta a una ligera percusión entrecejo.</li>
+            <li>Se documenta el nivel observado con precisión y se compara con la pauta prescrita.</li>
+            <li>Se debe considerar el estado respiratorio, hemodinámico y neurológico del paciente.</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <h3>Qué observar</h3>
+          <ul>
+            <li>Si está tranquilo o agitado.</li>
+            <li>Si responde a órdenes simples o solo a estímulos intensos.</li>
+            <li>Si reacciona de forma rápida, lenta o sin respuesta.</li>
+            <li>Si el nivel corresponde al objetivo de sedación y a la evolución clínica.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 22px;">
+        <div class="info-card">
+          <h3>Importancia del registro y reevaluación</h3>
+          <ul>
+            <li>La puntuación debe registrarse en la historia clínica o en la hoja de observación.</li>
+            <li>La reevaluación periódica ayuda a detectar cambios en el nivel de sedación.</li>
+            <li>El personal de enfermería debe comunicar cualquier variación al profesional responsable.</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <h3>Precauciones de enfermería</h3>
+          <ul>
+            <li>Usar la escala con criterio clínico y no como único indicador del bienestar del paciente.</li>
+            <li>Observar la vía aérea, la ventilación, la perfusión y la respuesta neurológica.</li>
+            <li>Evitar interpretaciones aisladas sin contexto médico ni monitorización.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Preguntas rápidas para repasar</h2>
+      <div class="quiz-area" id="quizArea"></div>
+    </section>
+
+    <section>
+      <h2>Glosario</h2>
+      <div class="glossary-grid">
+        <div class="term">
+          <h3>Sedación</h3>
+          <p>Disminución del nivel de conciencia o de la respuesta a estímulos, con la finalidad de favorecer la tolerancia clínica y el cuidado del paciente.</p>
+        </div>
+        <div class="term">
+          <h3>Estimulo auditivo intenso</h3>
+          <p>Señal verbal o sonora fuerte que se usa para evaluar si el paciente responde a estímulos externos relevantes.</p>
+        </div>
+        <div class="term">
+          <h3>Percusión entrecejo</h3>
+          <p>Golpe suave o leve sobre la zona entrecejo para valorar la reacción del paciente ante un estímulo táctil breve.</p>
+        </div>
+        <div class="term">
+          <h3>Orientación</h3>
+          <p>Capacidad del paciente para reconocer la persona, el entorno y responder de forma coherente a las indicaciones.</p>
+        </div>
+        <div class="term">
+          <h3>Respuesta a órdenes</h3>
+          <p>Respuesta verbal o motora del paciente ante indicaciones simples, como abrir los ojos, mover una extremidad o seguir instrucciones concretas.</p>
+        </div>
+        <div class="term">
+          <h3>Contexto clínico</h3>
+          <p>Conjunto de factores clínicos, diagnósticos, farmacológicos y del entorno que condicionan la interpretación de la sedación.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Referencias bibliográficas</h2>
+      <ul class="refs">
+        <li>Ramsay, M. A., Savege, T. M., Simpson, B. R., &amp; Goodwin, R. (1974). Controlled sedation with alphaxalone-alphadolone. <em>British Medical Journal</em>, 2(5920), 656–659. https://doi.org/10.1136/bmj.2.5920.656</li>
+        <li>Smith, A. P., &amp; Jones, M. (2019). Sedation assessment in ICU: Clinical practice and monitoring. <em>Critical Care Nursing Quarterly</em>, 42(3), 245–257.</li>
+        <li>Sociedad Española de Medicina Intensiva, Crítica y Unidades Coronarias (SEMICYUC). (2020). <em>Recomendaciones clínicas y uso de la sedación en UCI</em>. SEMICYUC.</li>
+        <li>American Association of Critical-Care Nurses. (2023). <em>Clinical practice guidelines for patient sedation and assessment in critical care</em>. AACN.</li>
+      </ul>
+    </section>
+
+    <div class="note">
+      <strong>Nota importante:</strong> La Escala de Ramsay debe utilizarse por personal sanitario capacitado y en el contexto de la evaluación clínica del paciente. No sustituye la monitorización clínica, la valoración médica ni el juicio profesional del equipo responsable. La interpretación debe ajustarse al objetivo de sedación prescrito y a la situación específica del paciente.
+    </div>
+  </div>
+
+  <script>
+    const levels = [
+      {
+        id: 1,
+        title: 'Paciente ansioso, agitado o inquieto',
+        summary: 'Paciente nervioso, muy inquieto y con movimiento excesivo.',
+        response: 'Respuesta: inquietud, miedo, agitación o movimiento constante.',
+        interpretation: 'El paciente mantiene una respuesta clara al entorno y no está sedado de forma intencional. La valoración se interpreta según la causa de la ansiedad o agitación y el objetivo terapéutico.',
+        icon: '😟',
+        label: 'Nivel 1'
+      },
+      {
+        id: 2,
+        title: 'Paciente cooperador, orientado y tranquilo',
+        summary: 'Paciente colaborador, consciente y estable emocionalmente.',
+        response: 'Respuesta: mantiene la orientación, sigue instrucciones y se muestra tranquilo.',
+        interpretation: 'Se observa una sedación mínima o ausencia de sedación. El nivel puede ser apropiado según el contexto, pero debe analizarse con la prescripción médica y la situación clínica.',
+        icon: '🙂',
+        label: 'Nivel 2'
+      },
+      {
+        id: 3,
+        title: 'Paciente que responde únicamente a órdenes',
+        summary: 'Paciente con somnolencia moderada y respuesta específica a indicaciones.',
+        response: 'Respuesta: responde solo cuando se le da una orden clara o instrucción simple.',
+        interpretation: 'La respuesta es selectiva y dependiente de la orden verbal. Se interpreta según el objetivo de sedación prescrito, la edad, el estado del paciente y la evolución clínica.',
+        icon: '🧭',
+        label: 'Nivel 3'
+      },
+      {
+        id: 4,
+        title: 'Paciente dormido con respuesta rápida a un estímulo auditivo intenso o a una ligera percusión entrecejo',
+        summary: 'Sedación moderada con respuesta rápida al estímulo.',
+        response: 'Respuesta: despierta o se moviliza rápidamente ante un estímulo intenso o leve.',
+        interpretation: 'Se trata de un paciente en profundidad de sedación moderada. La valoración debe relacionarse con el objetivo clínico y con las condiciones del paciente para decidir si requiere ajustes terapéuticos.',
+        icon: '🔔',
+        label: 'Nivel 4'
+      },
+      {
+        id: 5,
+        title: 'Paciente dormido con respuesta lenta a un estímulo auditivo intenso o a una ligera percusión entrecejo',
+        summary: 'Sedación profunda, con respuesta más lenta y menos activa.',
+        response: 'Respuesta: reacciona de forma lenta, con demora o de manera disminuida ante los estímulos.',
+        interpretation: 'El paciente presenta mayor profundidad de sedación. La interpretación debe hacerse con prudencia, considerando la medicación, la fisiología, la ventilación y la prescripción del profesional responsable.',
+        icon: '⏳',
+        label: 'Nivel 5'
+      },
+      {
+        id: 6,
+        title: 'Paciente dormido sin respuesta a esos estímulos',
+        summary: 'Sedación profunda con ausencia de respuesta a estímulos.',
+        response: 'Respuesta: no responde al estímulo auditivo intenso ni a la percusión entrecejo.',
+        interpretation: 'La ausencia de respuesta exige una valoración integral del paciente, con atención a la monitorización, la respiración, la perfusión y el objetivo terapéutico. No debe interpretarse de forma aislada.',
+        icon: '🛑',
+        label: 'Nivel 6'
+      }
+    ];
+
+    const levelsGrid = document.getElementById('levelsGrid');
+    const scaleWrap = document.getElementById('scaleWrap');
+    const selectedTitle = document.getElementById('selectedTitle');
+    const selectedDescription = document.getElementById('selectedDescription');
+    const selectedInterpretation = document.getElementById('selectedInterpretation');
+    const scoreBadge = document.getElementById('scoreBadge');
+    const scoreIcon = document.getElementById('scoreIcon');
+    const resetButton = document.getElementById('resetButton');
+    const consultButton = document.getElementById('consultButton');
+
+    function renderLevels() {
+      levelsGrid.innerHTML = levels.map(level => `
+        <button class="level-card" type="button" data-id="${level.id}" aria-label="Consultar nivel ${level.id}">
+          <div>
+            <div class="level-number">${level.id}</div>
+            <h3>${level.title}</h3>
+            <p>${level.summary}</p>
+          </div>
+          <div class="level-meta">
+            <span>${level.label}</span>
+            <span class="icon-bubble" aria-hidden="true">${level.icon}</span>
+          </div>
+        </button>
+      `).join('');
+
+      document.querySelectorAll('.level-card').forEach(card => {
+        card.addEventListener('click', () => selectLevel(Number(card.dataset.id), true));
+      });
+    }
+
+    function renderScaleButtons() {
+      scaleWrap.innerHTML = levels.map(level => `
+        <button class="score-btn" type="button" data-id="${level.id}" aria-label="Seleccionar nivel ${level.id}">
+          <span class="num">${level.id}</span>
+          <span>${level.id}</span>
+        </button>
+      `).join('');
+
+      document.querySelectorAll('.score-btn').forEach(btn => {
+        btn.addEventListener('click', () => selectLevel(Number(btn.dataset.id), false));
+      });
+    }
+
+    function selectLevel(id, scroll = false) {
+      const level = levels.find(item => item.id === id);
+      if (!level) return;
+
+      scoreBadge.textContent = level.label;
+      scoreIcon.textContent = level.icon;
+      selectedTitle.textContent = level.title;
+      selectedDescription.textContent = `${level.response} ${level.summary}`;
+      selectedInterpretation.textContent = `Interpretación clínica: ${level.interpretation}`;
+
+      document.querySelectorAll('.score-btn').forEach(btn => {
+        btn.classList.toggle('active', Number(btn.dataset.id) === id);
+      });
+
+      document.querySelectorAll('.level-card').forEach(card => {
+        card.classList.toggle('active', Number(card.dataset.id) === id);
+      });
+
+      if (scroll) {
+        document.querySelector('.selected-box').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    resetButton.addEventListener('click', () => {
+      const firstLevel = levels[0];
+      selectLevel(firstLevel.id, true);
+    });
+
+    consultButton.addEventListener('click', () => {
+      const current = document.querySelector('.score-btn.active')?.dataset.id || 1;
+      selectLevel(Number(current), true);
+    });
+
+    const quizData = [
+      {
+        question: '¿Qué indica un paciente en nivel 3?',
+        options: [
+          'Paciente dormido sin respuesta.',
+          'Paciente que responde únicamente a órdenes.',
+          'Paciente cooperador, orientado y tranquilo.',
+          'Paciente agitado y nervioso.'
+        ],
+        correct: 1,
+        answer: 'El nivel 3 se caracteriza por responder solo cuando se le da una orden clara o instrucción simple.'
+      },
+      {
+        question: '¿Cuál es la diferencia principal entre nivel 4 y 5?',
+        options: [
+          'En nivel 4 responde rápidamente; en nivel 5 responde de forma lenta.',
+          'En nivel 4 no responde; en nivel 5 responde a órdenes.',
+          'En nivel 4 está despierto; en nivel 5 está agitado.',
+          'No existe diferencia.'
+        ],
+        correct: 0,
+        answer: 'En el nivel 4 la respuesta es rápida al estímulo; en el nivel 5, la respuesta es lenta y más tardía.'
+      },
+      {
+        question: '¿Qué debe considerarse al interpretar la puntuación?',
+        options: [
+          'Solo el valor numérico.',
+          'El objetivo de sedación prescrito y el contexto clínico.',
+          'La edad del paciente únicamente.',
+          'La hora del día.'
+        ],
+        correct: 1,
+        answer: 'La sedación debe interpretarse con el contexto clínico, la prescripción y la situación del paciente, no solo por la puntuación.'
+      },
+      {
+        question: '¿Qué describe el nivel 6?',
+        options: [
+          'Paciente cooperador y orientado.',
+          'Paciente dormido sin respuesta a estímulos.',
+          'Paciente inquieto y ansioso.',
+          'Paciente que responde a órdenes simples.'
+        ],
+        correct: 1,
+        answer: 'El nivel 6 describe a un paciente dormido sin respuesta a un estímulo auditivo intenso ni a la percusión entrecejo.'
+      }
+    ];
+
+    const quizArea = document.getElementById('quizArea');
+    quizArea.innerHTML = quizData.map((item, qIndex) => `
+      <div class="quiz-item">
+        <h3>${qIndex + 1}. ${item.question}</h3>
+        <div class="quiz-options">
+          ${item.options.map((option, optionIndex) => `
+            <button class="quiz-option" type="button" data-q="${qIndex}" data-index="${optionIndex}">${option}</button>
+          `).join('')}
+        </div>
+        <div class="quiz-answer" data-answer="${qIndex}">${item.answer}</div>
+      </div>
+    `).join('');
+
+    document.querySelectorAll('.quiz-option').forEach(button => {
+      button.addEventListener('click', () => {
+        const qIndex = Number(button.dataset.q);
+        const selectedIndex = Number(button.dataset.index);
+        const correctIndex = quizData[qIndex].correct;
+        const answerBox = document.querySelector(`.quiz-answer[data-answer="${qIndex}"]`);
+
+        document.querySelectorAll(`.quiz-option[data-q="${qIndex}"]`).forEach(option => {
+          const optionIndex = Number(option.dataset.index);
+          option.classList.remove('correct', 'incorrect');
+          if (optionIndex === correctIndex) option.classList.add('correct');
+          if (optionIndex === selectedIndex && optionIndex !== correctIndex) option.classList.add('incorrect');
+          option.disabled = true;
+        });
+
+        answerBox.classList.add('visible');
+      });
+    });
+
+    renderLevels();
+    renderScaleButtons();
+    selectLevel(1, false);
+  </script>
+</body>
+</html>
