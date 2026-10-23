@@ -24,7 +24,15 @@
         margin: 0;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         color: var(--text);
-        background: linear-gradient(180deg, #edfafd 0%, #f7f9fb 100%);
+        background:
+          linear-gradient(rgba(18, 30, 36, 0.04), rgba(18, 30, 36, 0.04)),
+          repeating-linear-gradient(
+            to bottom,
+            #f3f7f8 0,
+            #f3f7f8 1px,
+            transparent 1px,
+            transparent 16px
+          );
         min-height: 100vh;
       }
 
@@ -256,46 +264,46 @@
 
       .levels-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1rem;
+        gap: 0.6rem;
       }
       .level-card {
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 22px;
-        box-shadow: 0 12px 24px rgba(16,61,76,0.06);
-        padding: 0.9rem;
-      }
-      .level-visual {
-        height: 110px;
-        border-radius: 18px;
-        background: linear-gradient(135deg, #edfafd, #dff3f8);
-        border: 1px solid rgba(13,92,117,0.08);
         display: grid;
-        place-items: center;
-        margin-bottom: 0.8rem;
+        grid-template-columns: minmax(220px, 1fr) minmax(240px, 1.4fr);
+        align-items: center;
+        gap: 1.2rem;
+        min-height: 110px;
+        padding: 0.7rem 0.9rem 0.7rem 1.1rem;
+        border-radius: 38px;
+        border: 1px solid rgba(0,0,0,0.04);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
         overflow: hidden;
       }
       .level-card h3 {
-        margin: 0 0 0.5rem;
-        color: var(--primary-dark);
-      }
-      .level-card p {
         margin: 0;
-        line-height: 1.7;
+        font-size: clamp(2rem, 2.6vw, 3.1rem);
+        line-height: 1;
+        letter-spacing: -0.04em;
+        color: #111;
+        font-weight: 900;
       }
-      .pill {
-        display: inline-flex;
-        align-items: center;
+      .surface {
+        display: flex;
         justify-content: center;
-        min-width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        font-weight: 800;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: white;
-        margin-bottom: 0.7rem;
+        align-items: center;
+        width: 100%;
+        min-height: 86px;
       }
+      .surface svg {
+        width: min(100%, 340px);
+        height: auto;
+        display: block;
+      }
+      .level-1 { background: #e9dca9; }
+      .level-2 { background: #d8d1eb; }
+      .level-3 { background: #f0d7d5; }
+      .level-4 { background: #d9e9f4; }
+      .level-5 { background: #f1dcb0; }
+      .level-6 { background: #dfe0e0; }
 
       .footer {
         padding: 1.3rem 0 2.6rem;
@@ -310,7 +318,6 @@
 
       @media (max-width: 900px) {
         .score-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        .levels-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       }
       @media (max-width: 720px) {
         .topbar-inner {
@@ -324,8 +331,7 @@
         .hero-card {
           padding: 1.3rem 1rem 1.1rem;
         }
-        .score-grid,
-        .levels-grid {
+        .score-grid {
           grid-template-columns: 1fr;
         }
         .selector-head {
@@ -337,6 +343,14 @@
         }
         .score-actions {
           justify-content: stretch;
+        }
+        .level-card {
+          grid-template-columns: 1fr;
+          border-radius: 24px;
+          padding: 0.8rem 0.9rem 1rem;
+        }
+        .surface {
+          min-height: 80px;
         }
       }
     </style>
@@ -409,125 +423,127 @@
         </div>
 
         <div class="levels-grid">
-          <article class="level-card">
-            <div class="level-visual" aria-hidden="true">
-              <svg viewBox="0 0 140 100" width="120" height="90">
-                <rect x="12" y="70" width="116" height="12" rx="6" fill="#bfe8ee"/>
-                <circle cx="70" cy="28" r="18" fill="#f9d7a4"/>
-                <path d="M60 32 L66 30 L72 32 L72 35 L60 35 Z" fill="#1f4d5f" opacity="0.35"/>
-                <circle cx="64" cy="31" r="2.5" fill="#1f4d5f"/>
-                <circle cx="76" cy="31" r="2.5" fill="#1f4d5f"/>
-                <path d="M60 36 Q70 42 80 36" stroke="#1f4d5f" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <path d="M46 48 Q54 36 60 44" stroke="#f4b88a" stroke-width="5" fill="none" stroke-linecap="round"/>
-                <path d="M94 48 Q86 36 80 44" stroke="#f4b88a" stroke-width="5" fill="none" stroke-linecap="round"/>
-                <path d="M52 56 L48 72" stroke="#6a8ca0" stroke-width="5" stroke-linecap="round"/>
-                <path d="M88 56 L92 72" stroke="#6a8ca0" stroke-width="5" stroke-linecap="round"/>
-                <path d="M58 53 L52 60" stroke="#4d5e74" stroke-width="4" stroke-linecap="round"/>
-                <path d="M82 53 L88 60" stroke="#4d5e74" stroke-width="4" stroke-linecap="round"/>
+          <article class="level-card level-1">
+            <h3>NIVEL 1</h3>
+            <div class="surface" aria-label="Nivel 1">
+              <svg viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                <g fill="none" stroke="#5c4f3f" stroke-linecap="round" stroke-linejoin="round">
+                  <g transform="translate(28,0)">
+                    <path d="M28 38 Q48 8 76 38" stroke-width="3" opacity="0.6"/>
+                    <path d="M86 38 Q106 8 134 38" stroke-width="3" opacity="0.6"/>
+                    <path d="M16 52 Q50 32 68 47" stroke-width="3" opacity="0.6"/>
+                    <path d="M112 46 Q136 30 156 52" stroke-width="3" opacity="0.6"/>
+                  </g>
+                  <g transform="translate(18,0)">
+                    <path d="M28 56 Q50 40 72 56" stroke-width="2.5" opacity="0.8"/>
+                    <path d="M110 56 Q132 40 154 56" stroke-width="2.5" opacity="0.8"/>
+                  </g>
+                  <g transform="translate(0,0)">
+                    <path d="M20 48c0-18 15-32 32-32s32 14 32 32c0 18-15 32-32 32s-32-14-32-32z" fill="#f8f1ea"/>
+                    <path d="M146 48c0-18 15-32 32-32s32 14 32 32c0 18-15 32-32 32s-32-14-32-32z" fill="#f8f1ea"/>
+                    <circle cx="52" cy="48" r="17" fill="#4a3529"/>
+                    <circle cx="178" cy="48" r="17" fill="#4a3529"/>
+                    <circle cx="48" cy="44" r="5" fill="#1b1b1b"/>
+                    <circle cx="174" cy="44" r="5" fill="#1b1b1b"/>
+                    <path d="M42 59 Q52 66 62 59" stroke="#473625" stroke-width="2.4"/>
+                    <path d="M168 59 Q178 66 188 59" stroke="#473625" stroke-width="2.4"/>
+                  </g>
+                </g>
               </svg>
             </div>
-            <div class="pill">1</div>
-            <h3>Ramsay 1</h3>
-            <p>Paciente despierto, ansioso, agitado o inquieto; no colabora con el procedimiento.</p>
           </article>
 
-          <article class="level-card">
-            <div class="level-visual" aria-hidden="true">
-              <svg viewBox="0 0 140 100" width="120" height="90">
-                <rect x="12" y="70" width="116" height="12" rx="6" fill="#bfe8ee"/>
-                <circle cx="70" cy="28" r="18" fill="#f9d7a4"/>
-                <circle cx="64" cy="31" r="2.5" fill="#1f4d5f"/>
-                <circle cx="76" cy="31" r="2.5" fill="#1f4d5f"/>
-                <path d="M60 38 Q70 43 80 38" stroke="#1f4d5f" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <path d="M54 49 Q52 56 58 60" stroke="#f4b88a" stroke-width="5" fill="none" stroke-linecap="round"/>
-                <path d="M86 49 Q88 56 82 60" stroke="#f4b88a" stroke-width="5" fill="none" stroke-linecap="round"/>
-                <path d="M54 56 L52 72" stroke="#6a8ca0" stroke-width="5" stroke-linecap="round"/>
-                <path d="M86 56 L88 72" stroke="#6a8ca0" stroke-width="5" stroke-linecap="round"/>
-                <path d="M52 59 L49 64" stroke="#4d5e74" stroke-width="4" stroke-linecap="round"/>
-                <path d="M88 59 L91 64" stroke="#4d5e74" stroke-width="4" stroke-linecap="round"/>
+          <article class="level-card level-2">
+            <h3>NIVEL 2</h3>
+            <div class="surface" aria-label="Nivel 2">
+              <svg viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                <g fill="none" stroke="#5d4f4e" stroke-linecap="round" stroke-linejoin="round">
+                  <g transform="translate(0,0)">
+                    <path d="M20 48c0-18 15-32 32-32s32 14 32 32c0 18-15 32-32 32s-32-14-32-32z" fill="#f8f1ea"/>
+                    <path d="M146 48c0-18 15-32 32-32s32 14 32 32c0 18-15 32-32 32s-32-14-32-32z" fill="#f8f1ea"/>
+                    <circle cx="52" cy="48" r="17" fill="#4a3529"/>
+                    <circle cx="178" cy="48" r="17" fill="#4a3529"/>
+                    <circle cx="48" cy="44" r="5" fill="#1b1b1b"/>
+                    <circle cx="174" cy="44" r="5" fill="#1b1b1b"/>
+                    <path d="M42 58 Q52 64 62 58" stroke="#473625" stroke-width="2.4"/>
+                    <path d="M168 58 Q178 64 188 58" stroke="#473625" stroke-width="2.4"/>
+                  </g>
+                </g>
               </svg>
             </div>
-            <div class="pill">2</div>
-            <h3>Ramsay 2</h3>
-            <p>Paciente despierto, cooperador, orientado y tranquilo; tolera adecuadamente los dispositivos.</p>
           </article>
 
-          <article class="level-card">
-            <div class="level-visual" aria-hidden="true">
-              <svg viewBox="0 0 140 100" width="120" height="90">
-                <rect x="12" y="70" width="116" height="12" rx="6" fill="#bfe8ee"/>
-                <circle cx="70" cy="28" r="18" fill="#f9d7a4"/>
-                <circle cx="64" cy="31" r="2.5" fill="#1f4d5f"/>
-                <circle cx="76" cy="31" r="2.5" fill="#1f4d5f"/>
-                <path d="M62 38 Q70 42 78 38" stroke="#1f4d5f" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <path d="M46 48 L60 52" stroke="#7fc5d5" stroke-width="4" stroke-linecap="round"/>
-                <path d="M94 48 L80 52" stroke="#7fc5d5" stroke-width="4" stroke-linecap="round"/>
-                <path d="M55 54 L48 72" stroke="#6a8ca0" stroke-width="5" stroke-linecap="round"/>
-                <path d="M85 54 L92 72" stroke="#6a8ca0" stroke-width="5" stroke-linecap="round"/>
-                <path d="M58 68 L72 70 L85 68" stroke="#1f4d5f" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <article class="level-card level-3">
+            <h3>NIVEL 3</h3>
+            <div class="surface" aria-label="Nivel 3">
+              <svg viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                <g fill="none" stroke="#5d4f4e" stroke-linecap="round" stroke-linejoin="round">
+                  <g transform="translate(0,0)">
+                    <path d="M20 48c0-18 15-32 32-32s32 14 32 32c0 18-15 32-32 32s-32-14-32-32z" fill="#f8f1ea"/>
+                    <path d="M146 48c0-18 15-32 32-32s32 14 32 32c0 18-15 32-32 32s-32-14-32-32z" fill="#f8f1ea"/>
+                    <circle cx="52" cy="48" r="17" fill="#4a3529"/>
+                    <circle cx="178" cy="48" r="17" fill="#4a3529"/>
+                    <circle cx="48" cy="44" r="5" fill="#1b1b1b"/>
+                    <circle cx="174" cy="44" r="5" fill="#1b1b1b"/>
+                    <path d="M40 40 Q52 28 64 40" stroke="#473625" stroke-width="2.7"/>
+                    <path d="M166 40 Q178 28 190 40" stroke="#473625" stroke-width="2.7"/>
+                  </g>
+                </g>
               </svg>
             </div>
-            <div class="pill">3</div>
-            <h3>Ramsay 3</h3>
-            <p>Paciente despierto, responde solo a órdenes verbales y vuelve a reposo.</p>
           </article>
 
-          <article class="level-card">
-            <div class="level-visual" aria-hidden="true">
-              <svg viewBox="0 0 140 100" width="120" height="90">
-                <rect x="12" y="70" width="116" height="12" rx="6" fill="#bfe8ee"/>
-                <circle cx="70" cy="28" r="18" fill="#f9d7a4"/>
-                <path d="M60 31 Q70 35 80 31" stroke="#1f4d5f" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <path d="M62 36 Q70 41 78 36" stroke="#1f4d5f" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <path d="M46 52 Q56 42 66 52" stroke="#7fc5d5" stroke-width="4" fill="none" stroke-linecap="round"/>
-                <path d="M94 52 Q84 42 74 52" stroke="#7fc5d5" stroke-width="4" fill="none" stroke-linecap="round"/>
-                <path d="M52 58 L44 72" stroke="#6a8ca0" stroke-width="5" stroke-linecap="round"/>
-                <path d="M88 58 L96 72" stroke="#6a8ca0" stroke-width="5" stroke-linecap="round"/>
-                <path d="M68 48 L86 52" stroke="#4d5e74" stroke-width="4" stroke-linecap="round"/>
+          <article class="level-card level-4">
+            <h3>NIVEL 4</h3>
+            <div class="surface" aria-label="Nivel 4">
+              <svg viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                <g fill="none" stroke="#5d4f4e" stroke-linecap="round" stroke-linejoin="round">
+                  <g transform="translate(0,0)">
+                    <path d="M20 48c0-18 15-32 32-32s32 14 32 32c0 18-15 32-32 32s-32-14-32-32z" fill="#f8f1ea"/>
+                    <path d="M146 48c0-18 15-32 32-32s32 14 32 32c0 18-15 32-32 32s-32-14-32-32z" fill="#f8f1ea"/>
+                    <circle cx="52" cy="48" r="17" fill="#4a3529"/>
+                    <circle cx="178" cy="48" r="17" fill="#4a3529"/>
+                    <circle cx="48" cy="44" r="5" fill="#1b1b1b"/>
+                    <circle cx="174" cy="44" r="5" fill="#1b1b1b"/>
+                    <path d="M34 60 Q52 48 70 60" stroke="#473625" stroke-width="2.4"/>
+                    <path d="M160 60 Q178 48 196 60" stroke="#473625" stroke-width="2.4"/>
+                  </g>
+                </g>
               </svg>
             </div>
-            <div class="pill">4</div>
-            <h3>Ramsay 4</h3>
-            <p>Paciente somnoliento, despierta rápidamente ante estímulo auditivo o táctil leve.</p>
           </article>
 
-          <article class="level-card">
-            <div class="level-visual" aria-hidden="true">
-              <svg viewBox="0 0 140 100" width="120" height="90">
-                <rect x="12" y="70" width="116" height="12" rx="6" fill="#bfe8ee"/>
-                <circle cx="70" cy="30" r="18" fill="#f9d7a4"/>
-                <path d="M60 34 Q70 28 80 34" stroke="#1f4d5f" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <path d="M54 54 Q66 42 78 54" stroke="#7fc5d5" stroke-width="4" fill="none" stroke-linecap="round"/>
-                <path d="M50 62 L44 72" stroke="#6a8ca0" stroke-width="5" stroke-linecap="round"/>
-                <path d="M90 62 L96 72" stroke="#6a8ca0" stroke-width="5" stroke-linecap="round"/>
-                <path d="M62 52 L52 55" stroke="#4d5e74" stroke-width="4" stroke-linecap="round"/>
-                <path d="M78 52 L88 55" stroke="#4d5e74" stroke-width="4" stroke-linecap="round"/>
-                <path d="M89 20 Q99 18 100 26" stroke="#4d5e74" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <article class="level-card level-5">
+            <h3>NIVEL 5</h3>
+            <div class="surface" aria-label="Nivel 5">
+              <svg viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                <g fill="none" stroke="#3b342f" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M26 50 Q46 32 56 50" stroke-width="4"/>
+                  <path d="M58 50 Q70 30 82 50" stroke-width="4"/>
+                  <path d="M84 50 Q95 30 108 50" stroke-width="4"/>
+                  <path d="M138 50 Q158 32 168 50" stroke-width="4"/>
+                  <path d="M170 50 Q182 30 194 50" stroke-width="4"/>
+                  <path d="M196 50 Q208 30 220 50" stroke-width="4"/>
+                </g>
               </svg>
             </div>
-            <div class="pill">5</div>
-            <h3>Ramsay 5</h3>
-            <p>Paciente dormido con respuesta lenta o perezosa ante estímulos intensos.</p>
           </article>
 
-          <article class="level-card">
-            <div class="level-visual" aria-hidden="true">
-              <svg viewBox="0 0 140 100" width="120" height="90">
-                <rect x="12" y="70" width="116" height="12" rx="6" fill="#bfe8ee"/>
-                <circle cx="70" cy="28" r="18" fill="#f9d7a4"/>
-                <path d="M58 31 Q70 22 82 31" stroke="#1f4d5f" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <path d="M56 44 Q70 34 84 44" stroke="#1f4d5f" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <path d="M49 58 L41 72" stroke="#6a8ca0" stroke-width="5" stroke-linecap="round"/>
-                <path d="M91 58 L99 72" stroke="#6a8ca0" stroke-width="5" stroke-linecap="round"/>
-                <path d="M52 44 L63 52" stroke="#4d5e74" stroke-width="4" stroke-linecap="round"/>
-                <path d="M88 44 L77 52" stroke="#4d5e74" stroke-width="4" stroke-linecap="round"/>
-                <path d="M46 18 L90 18" stroke="#d96464" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
-                <path d="M46 18 L90 18" stroke="#d96464" stroke-width="4" stroke-linecap="round" transform="rotate(90 70 18)" opacity="0.8"/>
+          <article class="level-card level-6">
+            <h3>NIVEL 6</h3>
+            <div class="surface" aria-label="Nivel 6">
+              <svg viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                <g fill="none" stroke="#3b342f" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M26 50 Q46 32 56 50" stroke-width="4"/>
+                  <path d="M58 50 Q70 30 82 50" stroke-width="4"/>
+                  <path d="M84 50 Q95 30 108 50" stroke-width="4"/>
+                  <path d="M138 50 Q158 32 168 50" stroke-width="4"/>
+                  <path d="M170 50 Q182 30 194 50" stroke-width="4"/>
+                  <path d="M196 50 Q208 30 220 50" stroke-width="4"/>
+                  <text x="237" y="55" font-size="28" font-weight="900" fill="#0d5c75" font-family="Segoe UI, Arial, sans-serif">Z</text>
+                </g>
               </svg>
             </div>
-            <div class="pill">6</div>
-            <h3>Ramsay 6</h3>
-            <p>Paciente dormido sin respuesta a estímulos; requiere vigilancia clínica reforzada.</p>
           </article>
         </div>
       </section>
