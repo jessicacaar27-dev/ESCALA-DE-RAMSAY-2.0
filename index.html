@@ -527,6 +527,10 @@
         margin-top: 1rem;
       }
 
+      .score-actions.hidden {
+        display: none;
+      }
+
       .two-col {
         display: grid;
         grid-template-columns: 1.15fr 0.85fr;
@@ -780,7 +784,7 @@
             <button class="score-btn" data-score="6" type="button"><span class="num">6</span><span>Sin respuesta</span></button>
           </div>
 
-          <div class="score-actions">
+          <div class="score-actions hidden" id="evaluateWrap">
             <button id="evaluateBtn" class="btn btn-primary" type="button">Evaluar paciente</button>
           </div>
 
@@ -891,6 +895,15 @@
       const scoreResult = document.getElementById('scoreResult');
       const resetBtn = document.getElementById('resetBtn');
       const evaluateBtn = document.getElementById('evaluateBtn');
+      const evaluateWrap = document.getElementById('evaluateWrap');
+
+      function showEvaluateButton() {
+        evaluateWrap.classList.remove('hidden');
+      }
+
+      function hideEvaluateButton() {
+        evaluateWrap.classList.add('hidden');
+      }
 
       function renderSelection(score) {
         selectedScore = Number(score);
@@ -903,13 +916,13 @@
         });
       }
 
-      function renderScore(score, showOnlySummary = false) {
+      function renderScore(score, finalResult = false) {
         const data = levelData[score];
         if (!data) return;
 
         renderSelection(score);
 
-        if (showOnlySummary) {
+        if (finalResult) {
           scoreResult.innerHTML = `
             <div class="result-label">Resultado final</div>
             <h3 class="result-title">${data.title}</h3>
@@ -928,13 +941,17 @@
       }
 
       scoreButtons.forEach(button => {
-        button.addEventListener('click', () => renderScore(button.dataset.score));
+        button.addEventListener('click', () => {
+          renderScore(button.dataset.score);
+          showEvaluateButton();
+        });
       });
 
       levelButtons.forEach(button => {
         button.addEventListener('click', () => {
           const score = button.dataset.levelBtn;
           renderScore(score);
+          showEvaluateButton();
           document.getElementById('valoracion').scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       });
@@ -951,12 +968,14 @@
         }
 
         renderScore(selectedScore, true);
+        document.getElementById('valoracion').scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
 
       resetBtn.addEventListener('click', () => {
         selectedScore = null;
         scoreButtons.forEach(btn => btn.classList.remove('active'));
         levelCards.forEach(card => card.classList.remove('active'));
+        hideEvaluateButton();
         scoreResult.innerHTML = `
           <div class="result-label">Puntuación Ramsay</div>
           <h3 class="result-title">Sin selección aún</h3>
