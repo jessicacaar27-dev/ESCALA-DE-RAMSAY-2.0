@@ -204,6 +204,10 @@
         background: linear-gradient(135deg, rgba(42,160,183,0.12), rgba(13,92,117,0.06));
         box-shadow: 0 10px 18px rgba(13,92,117,0.12);
       }
+      .score-btn .icon {
+        font-size: 1.3rem;
+        line-height: 1;
+      }
       .score-btn .num {
         width: 42px;
         height: 42px;
@@ -299,6 +303,10 @@
         color: var(--muted);
         font-size: 0.94rem;
       }
+      .footer a {
+        color: var(--primary);
+        font-weight: 700;
+      }
 
       @media (max-width: 900px) {
         .score-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -373,12 +381,12 @@
           </div>
 
           <div class="score-grid" aria-label="Escala de Ramsay del 1 al 6">
-            <button class="score-btn" data-score="1" type="button"><span class="num">1</span><span>Ansioso</span></button>
-            <button class="score-btn" data-score="2" type="button"><span class="num">2</span><span>Tranquilo</span></button>
-            <button class="score-btn" data-score="3" type="button"><span class="num">3</span><span>Órdenes</span></button>
-            <button class="score-btn" data-score="4" type="button"><span class="num">4</span><span>Respuesta rápida</span></button>
-            <button class="score-btn" data-score="5" type="button"><span class="num">5</span><span>Respuesta lenta</span></button>
-            <button class="score-btn" data-score="6" type="button"><span class="num">6</span><span>Sin respuesta</span></button>
+            <button class="score-btn" data-score="1" type="button"><span class="icon" aria-hidden="true">😬</span><span class="num">1</span><span>Ansioso</span></button>
+            <button class="score-btn" data-score="2" type="button"><span class="icon" aria-hidden="true">🙂</span><span class="num">2</span><span>Tranquilo</span></button>
+            <button class="score-btn" data-score="3" type="button"><span class="icon" aria-hidden="true">💬</span><span class="num">3</span><span>Órdenes</span></button>
+            <button class="score-btn" data-score="4" type="button"><span class="icon" aria-hidden="true">👂</span><span class="num">4</span><span>Respuesta rápida</span></button>
+            <button class="score-btn" data-score="5" type="button"><span class="icon" aria-hidden="true">😴</span><span class="num">5</span><span>Respuesta lenta</span></button>
+            <button class="score-btn" data-score="6" type="button"><span class="icon" aria-hidden="true">💤</span><span class="num">6</span><span>Sin respuesta</span></button>
           </div>
 
           <div class="score-actions hidden" id="evaluateWrap">
@@ -526,7 +534,8 @@
     </main>
 
     <footer class="footer">
-      Escala de Sedación de Ramsay · Evaluación clínica del nivel de sedación
+      Escala de Sedación de Ramsay · Evaluación clínica del nivel de sedación ·
+      <a href="https://jessicacaar27-dev.github.io/ESCALA-DE-RAMSAY-2.0/" target="_blank" rel="noreferrer">Ver sitio web</a>
     </footer>
 
     <script>
