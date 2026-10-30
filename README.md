@@ -9,7 +9,15 @@ Aplicación interactiva educativa para la valoración del nivel de sedación del
 
 ## Descripción
 
-La escala de Ramsay permite valorar el nivel de sedación del paciente en contextos clínicos como UCI, cuidados postoperatorios y observación durante procedimientos. Esta herramienta presenta los seis niveles originales, su interpretación, una escala visual interactiva y contenido didáctico para reforzar su uso clínico.
+La escala de Ramsay permite valorar el nivel de sedación del paciente en contextos clínicos como UCI, cuidados postoperatorios y observación durante procedimientos. Esta herramienta presenta la escala original del 1 al 6 y facilita la interpretación del estado del paciente.
+
+## Referencia APA
+
+Ramsay, M. A. E., Savege, T. M., Simpson, B. R. J., & Goodwin, R. (1974). Controlled sedation with alphaxalone-alphadolone. British Medical Journal, 2(5920), 656-659.
+
+## Elaborado por
+
+Jessica Carmona Segura
 
 ## Importante
 
